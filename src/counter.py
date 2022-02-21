@@ -1,21 +1,20 @@
 import time
+import os
 
-
-# Buscar lib para reproducir sonidos
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
+import pygame
 
 
 class Clock:
-    init_time = 0
-    final_time = 0
-
-    # Falta static variable con el mp3 de ../assets/
+    pygame.mixer.init()
+    pygame.mixer.music.load('../assets/bell.mp3')
 
     def __init__(self):
         pass
 
     def start_time(self):
         self.init_time = time.time()
-        return time.time()
+        return self.init_time
 
     def stop_time(self):
         self.final_time = time.time()
@@ -28,11 +27,13 @@ class Clock:
     def pomodoro(self, study_time, rest_time, iterations):
         self.start_time()
         print(f'Starting Pomodoro, {study_time} min.')
-        # Falta sonido campana
+        pygame.mixer.music.play()
         for i in range(iterations):
             time.sleep(study_time * 60)
+            pygame.mixer.music.play()
             print(f'Resting, {rest_time} min.')
             time.sleep(rest_time * 60)
+            pygame.mixer.music.play()
             print(f'Starting study cycle {i + 2}, {iterations - 1 - i} cycles remaining.')
         print(f'Study completed!')
 
