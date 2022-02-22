@@ -5,21 +5,30 @@ os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame
 
 
+class StudyClockError(Exception):
+    """"""
 
-class Clock:
+
+class StudyClock:
     pygame.mixer.init()
     pygame.mixer.music.load('../assets/bell.mp3')
 
     def __init__(self):
+        self.start_time = None
+        self.paused_time = None
+        self.stop_time = None
+
+    def start(self):
+        if self.start_time is not None:
+            raise StudyClockError(f'Clock is already running')
+        self.start_time = time.time()
+
+    def stop(self):
+        if self.start_time is None:
+            raise StudyClockError
+
+    def pause(self):
         pass
-
-    def start_time(self):
-        self.init_time = time.time()
-        return self.init_time
-
-    def stop_time(self):
-        self.final_time = time.time()
-        return self.final_time
 
     def get_time(self):
         return self.final_time - self.init_time
@@ -38,12 +47,13 @@ class Clock:
             print(f'Starting study cycle {i + 2}, {iterations - 1 - i} cycles remaining.')
         print(f'Study completed!')
 
-
     """
     Estructura del json, fecha, hora inicio, hora final, tiempo, materia
     """
+
     def json_storage(self):
         pass
+
 
 def main():
     my_clock = Clock()
