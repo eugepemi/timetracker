@@ -5,6 +5,7 @@ os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame
 
 
+
 class Clock:
     pygame.mixer.init()
     pygame.mixer.music.load('../assets/bell.mp3')
@@ -37,6 +38,12 @@ class Clock:
             print(f'Starting study cycle {i + 2}, {iterations - 1 - i} cycles remaining.')
         print(f'Study completed!')
 
+
+    """
+    Estructura del json, fecha, hora inicio, hora final, tiempo, materia
+    """
+    def json_storage(self):
+        pass
 
 def main():
     my_clock = Clock()
