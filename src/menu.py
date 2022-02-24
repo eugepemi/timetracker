@@ -1,3 +1,7 @@
+from study_clock import StudyClock, StudyClockError
+from time import strftime, gmtime
+
+
 def menu():
     print('[1] Start timer \n'
           '[2] Stop timer \n'
@@ -7,13 +11,17 @@ def menu():
 
 
 menu()
+clock = StudyClock()
 option = int((input('Select an option: ')))
 
 while option != 0:
     if option == 1:
-        pass
+        clock.start()
+        print('\nClock started...')
     elif option == 2:
-        pass
+        clock.stop()
+        print(f'\nClock stopped, elapsed time '
+              f'{strftime("%Hh:%Mm:%Ss", gmtime(clock.elapsed_time))}')
     elif option == 3:
         pass
     else:
