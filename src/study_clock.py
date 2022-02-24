@@ -1,12 +1,9 @@
 import time
 import os
+from clock_exception import StudyClockError
 
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame
-
-
-class StudyClockError(Exception):
-    """"""
 
 
 class StudyClock:
@@ -17,25 +14,54 @@ class StudyClock:
         self.start_time = None
         self.paused_time = None
         self.stop_time = None
+        self.elapsed_time = None
+        self.paused = False
 
     def start(self):
+        """
+        This method starts the clock.
+        """
         if self.start_time is not None:
-            raise StudyClockError(f'Clock is already running')
+            raise StudyClockError.ERROR_STARTED
         self.start_time = time.time()
 
     def stop(self):
+        """
+        This method stops the clock.
+
+        :return: Elapsed time in seconds.
+        """
         if self.start_time is None:
-            raise StudyClockError
+            raise StudyClockError.ERROR_STOPPED
+        self.stop_time = time.time()
+        self.elapsed_time = self.stop_time - self.start_time
+        return self.elapsed_time
 
     def pause(self):
-        pass
+        """
+        This method pauses the clock.
+        """
+        if self.start_time is None:
+            raise StudyClockError.ERROR_NOT_STARTED
+        if self.paused:
+            raise StudyClockError.ERROR_PAUSED
+        self.paused_time = time.time()
+        self.paused = True
+
+    def resume(self):
+        if self.start_time is None:
+            raise StudyClockError.ERROR_NOT_STARTED
+        if not self.paused:
+            raise StudyClockError.ERROR_NOT_PAUSED
+        pause_time = time.time() - self.paused_time
+        self.start_time = self.start_time + pause_time
+        self.paused = False
 
     def get_time(self):
-        return self.final_time - self.init_time
+        return self.elapsed_time
 
-    # Controlar valores de entrada
     def pomodoro(self, study_time, rest_time, iterations):
-        self.start_time()
+        self.start()
         print(f'Starting Pomodoro, {study_time} min.')
         pygame.mixer.music.play()
         for i in range(iterations):
@@ -47,16 +73,9 @@ class StudyClock:
             print(f'Starting study cycle {i + 2}, {iterations - 1 - i} cycles remaining.')
         print(f'Study completed!')
 
-    """
-    Estructura del json, fecha, hora inicio, hora final, tiempo, materia
-    """
-
-    def json_storage(self):
-        pass
-
 
 def main():
-    my_clock = Clock()
+    my_clock = StudyClock()
     my_clock.pomodoro(0.5, 0.125, 2)
 
 
