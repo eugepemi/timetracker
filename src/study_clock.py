@@ -18,17 +18,29 @@ class StudyClock:
         self.paused = False
 
     def start(self):
+        """
+        This method starts the clock.
+        """
         if self.start_time is not None:
             raise StudyClockError.ERROR_STARTED
         self.start_time = time.time()
 
     def stop(self):
+        """
+        This method stops the clock.
+
+        :return: Elapsed time in seconds.
+        """
         if self.start_time is None:
             raise StudyClockError.ERROR_STOPPED
         self.stop_time = time.time()
         self.elapsed_time = self.stop_time - self.start_time
+        return self.elapsed_time
 
     def pause(self):
+        """
+        This method pauses the clock.
+        """
         if self.start_time is None:
             raise StudyClockError.ERROR_NOT_STARTED
         if self.paused:
